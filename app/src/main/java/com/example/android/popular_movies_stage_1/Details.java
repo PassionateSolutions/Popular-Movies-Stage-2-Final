@@ -102,13 +102,21 @@ public class Details extends AppCompatActivity {
 
         // TODO: Figure out why Favorite Button is showing saved before saving it
 
-        if (favoriteExists == true) {
-            (mFavoriteButton).setText(getString(R.string.favorite_marked));
-            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorAccent));
-        } else {
-            (mFavoriteButton).setText(getString(R.string.not_added_to_favorites));
-            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        if (savedInstanceState == null) {
+            favoriteExists = intent.getBooleanExtra("isFavorite", false);
+        } else{
+            savedInstanceState.getBoolean("isFavorite", favoriteExists);
         }
+
+        setFavoriteButton();
+
+//        if (favoriteExists == true) {
+//            (mFavoriteButton).setText(getString(R.string.favorite_marked));
+//            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorAccent));
+//        } else {
+//            (mFavoriteButton).setText(getString(R.string.not_added_to_favorites));
+//            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+//        }
 
 
         new FetchReviewsTask().execute();
@@ -119,13 +127,6 @@ public class Details extends AppCompatActivity {
 
         movieDb = FavoritesDbSingle.getInstance(this);
 
-        // TODO: Figure out why Favorite Button is showing saved before saving it
-        if (savedInstanceState == null) {
-            favoriteExists = intent.getBooleanExtra("isFavorite", false);
-        } else{
-            savedInstanceState.getBoolean("isFavorite", favoriteExists);
-        }
-
 
 
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -134,21 +135,32 @@ public class Details extends AppCompatActivity {
                 if (!favoriteExists) {
                     favoriteExists = true;
                     addMovie();
-                    ((Button) v).setText(getString(R.string.favorite_marked));
-                    ((Button) v).setTextColor(getResources().getColor(R.color.colorAccent));
+                    mFavoriteButton.setText(getString(R.string.favorite_marked));
+                    mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
                     Toast.makeText(Details.this,
                            "Saved to Favorites!", Toast.LENGTH_SHORT).show();
                 } else {
                     favoriteExists = false;
                     deleteMovie();
-                    ((Button) v).setText(getString(R.string.not_added_to_favorites));
-                    ((Button) v).setTextColor(getResources().getColor(R.color.colorAccent));
+                    mFavoriteButton.setText(getString(R.string.not_added_to_favorites));
+                    mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
                     Toast.makeText(Details.this,
                             "Removed from Favorites!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private void setFavoriteButton() {
+        if (!favoriteExists){
+            mFavoriteButton.setText(getString(R.string.favorite_marked));
+            mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
+        } else {
+            mFavoriteButton.setText(getString(R.string.not_added_to_favorites));
+            mFavoriteButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+    }
+
 
     // ASYNC Task for Trailers
 
@@ -326,8 +338,15 @@ public class Details extends AppCompatActivity {
                     mScrollView.scrollTo(position[0], position[1]);
                 }
             }, 300);
+            setFavoriteButton();
         }
 
         favoriteExists = savedInstanceState.getBoolean("isFavorite", favoriteExists);
+    }
+
+    @Override
+    protected void onPostResume() {
+        setFavoriteButton();
+        super.onPostResume();
     }
 }
