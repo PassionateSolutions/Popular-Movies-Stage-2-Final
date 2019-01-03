@@ -102,10 +102,13 @@ public class Details extends AppCompatActivity {
 
         // TODO: Figure out why Favorite Button is showing saved before saving it
 
-        if (favoriteExists = true) {
+        if (favoriteExists == true) {
             (mFavoriteButton).setText(getString(R.string.favorite_marked));
             (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorAccent));
-        } else favoriteExists = false;
+        } else {
+            (mFavoriteButton).setText(getString(R.string.not_added_to_favorites));
+            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
 
 
         new FetchReviewsTask().execute();
@@ -117,8 +120,10 @@ public class Details extends AppCompatActivity {
         movieDb = FavoritesDbSingle.getInstance(this);
 
         // TODO: Figure out why Favorite Button is showing saved before saving it
-        if (savedInstanceState != null) {
-            favoriteExists = intent.getBooleanExtra("isFavorite", true);
+        if (savedInstanceState == null) {
+            favoriteExists = intent.getBooleanExtra("isFavorite", false);
+        } else{
+            savedInstanceState.getBoolean("isFavorite", favoriteExists);
         }
 
 
@@ -322,7 +327,6 @@ public class Details extends AppCompatActivity {
                 }
             }, 300);
         }
-
 
         favoriteExists = savedInstanceState.getBoolean("isFavorite", favoriteExists);
     }

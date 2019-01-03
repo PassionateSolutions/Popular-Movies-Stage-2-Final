@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 //        }
 //    }
 
-    // 2nd One
+    //
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
