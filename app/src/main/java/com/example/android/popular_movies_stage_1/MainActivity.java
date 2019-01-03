@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     static final String STATE_SCROLL_POSITION = "scrollPos";
     static final String STATE_SORT_INDEX = "sortIndex";
 
+    private static final String SCROLL_POSITION = "SCROLL_POSITION";
 
 
     // Stored data for the favorites
@@ -195,23 +196,41 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
     }
 
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putIntArray("SCROLL_POSITION", new int[]{ movieGrid.getScrollX(), movieGrid.getScrollY()});
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
+//        if(position != null) {
+//            movieGrid.postDelayed(new Runnable() {
+//                public void run() {
+//                   movieGrid.scrollToPosition(10);
+//                }
+//            }, 300);
+//        }
+//    }
+
+    // 2nd One
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntArray("SCROLL_POSITION", new int[]{ movieGrid.getScrollX(), movieGrid.getScrollY()});
+        outState.putInt(SCROLL_POSITION, ((LinearLayoutManager)movieGrid.getLayoutManager()).findFirstVisibleItemPosition());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
-        if(position != null) {
-            movieGrid.postDelayed(new Runnable() {
-                public void run() {
-                   movieGrid.scrollToPosition(10);
-                }
-            }, 300);
-        }
+        final int position = savedInstanceState.getInt(SCROLL_POSITION);
+        movieGrid.postDelayed(new Runnable() {
+            public void run() {
+                movieGrid.scrollToPosition(position);
+            }
+        }, 300);
     }
-
 }
