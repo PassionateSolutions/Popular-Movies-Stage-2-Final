@@ -11,10 +11,13 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -48,14 +51,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainActivityInterface {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     private String sortBy;
     private MovieAdapter movieAdapter;
     private RecyclerView movieGrid;
     private GridLayoutManager layoutManager;
+
     private TextView errorMessage;
     private TextView noFavoritesView;
-    private ScrollView mScrollView;
     private ProgressBar loadingIndicator;
+
     private static final String SORT_BY_MOST_POPULAR = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY;
     private static final String SORT_BY_HIGHEST_RATED = "http://api.themoviedb.org/3/movie/top_rated?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY;
     private static final String SORT_BY_FAVORITES = "";
@@ -70,13 +75,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     static final String STATE_SORT_INDEX = "sortIndex";
 
 
+
     // Stored data for the favorites
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //mScrollView = findViewById(R.id.main_scroll_view);
         movieGrid = findViewById(R.id.grid_view);
         layoutManager = new GridLayoutManager(this, 2);
         movieGrid.setLayoutManager(layoutManager);
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         errorMessage = findViewById(R.id.empty_view);
         loadingIndicator = findViewById(R.id.loading_indicator);
         sortBy = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY;
-
+    
         getMovies();
         getFavoritesDisplayed();
     }
@@ -188,6 +193,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 errorMessage.setVisibility(View.VISIBLE);
                 loadingIndicator.setVisibility(View.INVISIBLE);
             }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray("SCROLL_POSITION", new int[]{ movieGrid.getScrollX(), movieGrid.getScrollY()});
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
+        if(position != null) {
+            movieGrid.postDelayed(new Runnable() {
+                public void run() {
+                   movieGrid.scrollToPosition(10);
+                }
+            }, 300);
+        }
     }
 
 }

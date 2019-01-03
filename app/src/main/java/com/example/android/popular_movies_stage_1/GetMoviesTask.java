@@ -73,8 +73,9 @@ public class GetMoviesTask extends AsyncTask<MainActivityInterface, Void, ArrayL
             e.printStackTrace();
         }
         return movies;
-
 }
+
+
 
 @Override
 protected void onPostExecute(ArrayList<Movie> movies){

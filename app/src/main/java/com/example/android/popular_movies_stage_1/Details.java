@@ -62,7 +62,7 @@ public class Details extends AppCompatActivity {
     private String[] mReviewAuthors;
     private String[] mReviewContent;
 
-    ScrollView mScrollView;
+    private ScrollView mScrollView;
 
     private int reviewCounter;
 
@@ -98,8 +98,9 @@ public class Details extends AppCompatActivity {
         reviewCounter = 0;
         mFavoriteButton = findViewById(R.id.save_button);
         mTrailerList = findViewById(R.id.trailer_list);
+        mScrollView = findViewById(R.id.mScrollView);
 
-        // TODO: Figure out why Favorite Button isnt saving whether or not movie is favorited
+        // TODO: Figure out why Favorite Button is showing saved before saving it
 
         if (favoriteExists = true) {
             (mFavoriteButton).setText(getString(R.string.favorite_marked));
@@ -115,7 +116,7 @@ public class Details extends AppCompatActivity {
 
         movieDb = FavoritesDbSingle.getInstance(this);
 
-        // TODO: Figure out why Favorite Button isnt saving whether or not movie is favorited
+        // TODO: Figure out why Favorite Button is showing saved before saving it
         if (savedInstanceState != null) {
             favoriteExists = intent.getBooleanExtra("isFavorite", false);
         }
@@ -321,6 +322,7 @@ public class Details extends AppCompatActivity {
                 }
             }, 300);
         }
+
 
         favoriteExists = savedInstanceState.getBoolean("isFavorite", favoriteExists);
     }
