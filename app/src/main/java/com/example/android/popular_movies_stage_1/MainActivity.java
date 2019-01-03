@@ -1,18 +1,11 @@
 package com.example.android.popular_movies_stage_1;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,14 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.example.android.popular_movies_stage_1.data.FavoritesDbSingle;
-import com.example.android.popular_movies_stage_1.data.FavoritesRoomObject;
 import com.example.android.popular_movies_stage_1.data.FavoritesViewModel;
-import com.example.android.popular_movies_stage_1.data.MovieDb;
-import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private GridLayoutManager layoutManager;
 
     private TextView errorMessage;
-    private TextView noFavoritesView;
     private ProgressBar loadingIndicator;
 
     private static final String SORT_BY_MOST_POPULAR = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY;
@@ -69,11 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     final String FAVORITE_TYPE = "favorite";
     private String movieType = "normal type";
     private ArrayList<Movie> mMovies = new ArrayList<>();
-
-    static final String STATE_SORT_TYPE = "sortType";
-    static final String STATE_SCROLL_POSITION = "scrollPos";
-    static final String STATE_SORT_INDEX = "sortIndex";
-
     private static final String SCROLL_POSITION = "SCROLL_POSITION";
 
 
@@ -196,26 +177,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putIntArray("SCROLL_POSITION", new int[]{ movieGrid.getScrollX(), movieGrid.getScrollY()});
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
-//        if(position != null) {
-//            movieGrid.postDelayed(new Runnable() {
-//                public void run() {
-//                   movieGrid.scrollToPosition(10);
-//                }
-//            }, 300);
-//        }
-//    }
-
-    //
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

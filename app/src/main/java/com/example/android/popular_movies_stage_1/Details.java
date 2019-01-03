@@ -1,16 +1,10 @@
 package com.example.android.popular_movies_stage_1;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,8 +15,6 @@ import android.widget.Toast;
 
 import com.example.android.popular_movies_stage_1.data.AppExecutors;
 import com.example.android.popular_movies_stage_1.data.FavoritesDbSingle;
-import com.example.android.popular_movies_stage_1.data.FavoritesRoomObject;
-import com.example.android.popular_movies_stage_1.data.FavoritesViewModel;
 import com.example.android.popular_movies_stage_1.data.MovieDb;
 import com.squareup.picasso.Picasso;
 
@@ -31,8 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 // Followed the walkthrough of @Gill AND from Slack.  His video on Youtube helped me follow the direction
 // to implement the working code.
@@ -108,15 +98,6 @@ public class Details extends AppCompatActivity {
 
         setFavoriteButton();
 
-//        if (favoriteExists == true) {
-//            (mFavoriteButton).setText(getString(R.string.favorite_marked));
-//            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorAccent));
-//        } else {
-//            (mFavoriteButton).setText(getString(R.string.not_added_to_favorites));
-//            (mFavoriteButton).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-//        }
-
-
         new FetchReviewsTask().execute();
         new FetchTrailersTask().execute();
 
@@ -150,8 +131,7 @@ public class Details extends AppCompatActivity {
     }
 
     private void setFavoriteButton() {
-        if (!favoriteExists){
-            favoriteExists = true;
+        if (favoriteExists){
             mFavoriteButton.setText(getString(R.string.favorite_marked));
             mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
         } else {
