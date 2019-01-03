@@ -118,7 +118,7 @@ public class Details extends AppCompatActivity {
 
         // TODO: Figure out why Favorite Button is showing saved before saving it
         if (savedInstanceState != null) {
-            favoriteExists = intent.getBooleanExtra("isFavorite", false);
+            favoriteExists = intent.getBooleanExtra("isFavorite", true);
         }
 
 
