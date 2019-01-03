@@ -104,8 +104,6 @@ public class Details extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             favoriteExists = intent.getBooleanExtra("isFavorite", false);
-        } else{
-            savedInstanceState.getBoolean("isFavorite", favoriteExists);
         }
 
         setFavoriteButton();
@@ -143,7 +141,7 @@ public class Details extends AppCompatActivity {
                     favoriteExists = false;
                     deleteMovie();
                     mFavoriteButton.setText(getString(R.string.not_added_to_favorites));
-                    mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
+                    mFavoriteButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     Toast.makeText(Details.this,
                             "Removed from Favorites!", Toast.LENGTH_SHORT).show();
                 }
@@ -153,6 +151,7 @@ public class Details extends AppCompatActivity {
 
     private void setFavoriteButton() {
         if (!favoriteExists){
+            favoriteExists = true;
             mFavoriteButton.setText(getString(R.string.favorite_marked));
             mFavoriteButton.setTextColor(getResources().getColor(R.color.colorAccent));
         } else {
@@ -338,15 +337,15 @@ public class Details extends AppCompatActivity {
                     mScrollView.scrollTo(position[0], position[1]);
                 }
             }, 300);
-            setFavoriteButton();
         }
 
         favoriteExists = savedInstanceState.getBoolean("isFavorite", favoriteExists);
+        setFavoriteButton();
     }
 
     @Override
-    protected void onPostResume() {
+    protected void onResume() {
+        super.onResume();
         setFavoriteButton();
-        super.onPostResume();
     }
 }
